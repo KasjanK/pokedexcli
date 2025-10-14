@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/KasjanK/pokedexcli/internal/pokeapi"
 )
 
 type cliCommand struct {
@@ -14,6 +16,7 @@ type cliCommand struct {
 }
 
 type config struct {
+	pokeapiClient 	pokeapi.Client
 	nextLocationURL *string
 	prevLocationURL *string
 }
