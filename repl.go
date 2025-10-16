@@ -12,13 +12,14 @@ import (
 type cliCommand struct {
 	name 			string
 	description 	string
-	callback 		func(*config) error
+	callback 		func(*config, string) error
 }
 
 type config struct {
 	pokeapiClient 	pokeapi.Client
 	nextLocationURL *string
 	prevLocationURL *string
+	parameter		*string
 }
 
 func supportedCommands() map[string]cliCommand {
@@ -43,6 +44,11 @@ func supportedCommands() map[string]cliCommand {
 			description: "Shows previous 20 location areas",
 			callback: commandMapb,
 		},
+		"explore": {
+			name: "explore",
+			description: "Shows all pokemon encounters in a specific area",
+			callback: commandExplore,
+		},
 	}
 }
 
@@ -53,15 +59,22 @@ func startRepl(cfg *config) {
 		if !scanner.Scan() {
 			break
 		}
+
 		input := cleanInput(scanner.Text())
+
 		if len(input) == 0 {
 			continue
 		}
-		commandName := input[0]
 
+		var parameter string
+		if len(input) > 1 {
+			parameter = input[1]
+		}
+
+		commandName := input[0]
 		command, ok := supportedCommands()[commandName]
 		if ok { 
-			err := command.callback(cfg)
+			err := command.callback(cfg, parameter)
 			if err != nil {
 				fmt.Println(err)
 			}

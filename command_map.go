@@ -3,10 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
-
 )
 
-func commandMap(cfg *config) error {
+func commandMap(cfg *config, parameter string) error {
 	locationsList, err := cfg.pokeapiClient.FetchLocationsList(cfg.nextLocationURL)
 	if err != nil {
 		return err
@@ -18,9 +17,9 @@ func commandMap(cfg *config) error {
 	for _, location := range locationsList.Results {
 		fmt.Println(location.Name)
 	}
-	return nil
+	return nil 
 }
-func commandMapb(cfg *config) error {
+func commandMapb(cfg *config, parameter string) error {
 	if cfg.prevLocationURL == nil {
 		return errors.New("you're on the first page")
 	}
@@ -36,6 +35,6 @@ func commandMapb(cfg *config) error {
 	for _, location := range locationsList.Results {
 		fmt.Println(location.Name)
 	}
-	return nil
+	return nil 
 }
 
